@@ -1,5 +1,7 @@
 const { createStore, applyMiddleware } = require("redux");
-const { delayActionMiddleware, fetchTodosMiddleware } = require("./middleware");
+const { todosFetch } = require("./functions");
+const thunk = require("redux-thunk");
+// const { fetchAsyncMiddleware } = require("./middlewares");
 //initial
 const initialState = {
   todos: [],
@@ -31,10 +33,7 @@ const todosReducer = (state = initialState, action) => {
 
 //store
 
-const store = createStore(
-  todosReducer,
-  applyMiddleware(delayActionMiddleware, fetchTodosMiddleware)
-);
+const store = createStore(todosReducer, applyMiddleware(thunk.default));
 
 // subscribe to state change
 store.subscribe(() => {
@@ -48,6 +47,4 @@ store.subscribe(() => {
 //     payload: "learn with sumit in redux"
 // })
 
-store.dispatch({
-  type: "todos/todoFetch",
-});
+store.dispatch(todosFetch);
